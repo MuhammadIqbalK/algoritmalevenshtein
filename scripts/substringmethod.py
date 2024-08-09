@@ -45,30 +45,25 @@ data_sap = pd.read_sql_query(query_sap, conn)
 data_rekon['norm_rekon'] = data_rekon['PROJECT_DESC'].apply(normalize)
 data_sap['norm_sap'] = data_sap['SHORT_TEX'].apply(normalize)
 
-# Pengecekan duplikat awal
-data_rekon = data_rekon.drop_duplicates(subset='norm_rekon').reset_index(drop=True)
-data_sap = data_sap.drop_duplicates(subset='norm_sap').reset_index(drop=True)
-
 # Mendapatkan list dari norm_sap
 sap_norm_list = data_sap['norm_sap'].tolist()
 
 # Mengatur panjang substring untuk pencocokan
-substring_length = 5
+substring_length = 4
 
-# Menyimpan hasil pencocokan
 results = []
 
 for _, rek_row in data_rekon.iterrows():
     rek_norm = rek_row['norm_rekon']
     for sap_norm in sap_norm_list:
-        if match_by_levenshtein(rek_norm, sap_norm):
-            if match_substrings(rek_norm, sap_norm, substring_length):
-                results.append({
-                    'rekon_id': rek_row.name,  # Menggunakan index sebagai ID
-                    'sap_id': sap_norm_list.index(sap_norm),  # Menggunakan index sebagai ID
-                    'norm_rekon': rek_norm,
-                    'norm_sap': sap_norm
-                })
+        # Pencocokan substring
+        if match_substrings(rek_norm, sap_norm, substring_length):
+            results.append({
+                'rekon_id': rek_row.name,  # Menggunakan index sebagai ID
+                'sap_id': sap_norm_list.index(sap_norm),  # Menggunakan index sebagai ID
+                'norm_rekon': rek_norm,
+                'norm_sap': sap_norm
+            })
 
 # Menghilangkan duplikat dan membatasi hasil
 results_df = pd.DataFrame(results).drop_duplicates().head(100)
