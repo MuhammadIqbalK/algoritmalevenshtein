@@ -102,7 +102,7 @@ results_df = pd.DataFrame(results).drop_duplicates()
 results_df = results_df.drop_duplicates(subset='norm_sap')
 
 # Mengeliminasi duplikasi pada `norm_rekon` setelah `norm_sap`
-final_results = results_df.drop_duplicates(subset='norm_rekon').head(100)
+final_results = results_df.drop_duplicates(subset='norm_rekon')
 
 # Mengatur tampilan untuk menampilkan semua baris dan kolom
 pd.set_option('display.max_rows', None)
