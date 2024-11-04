@@ -26,11 +26,11 @@ def match_by_levenshtein(rek_norm, sap_norm, threshold=75):
 
 # Ganti dengan detail koneksi Anda
 conn = psycopg2.connect(
-    dbname='develop',
-    user='develop',
-    password='dev2019',
-    host='10.62.175.21',
-    port='5433'
+    dbname='#########',
+    user='#########',
+    password='########',
+    host='#########',
+    port='#########'
 )
 
 # Ambil data dari database
